@@ -1,30 +1,54 @@
 import React, { useReducer, createContext } from "react";
 import uuid from "react-uuid";
 
-type Lollipop = {
+type FairyLollipop = {
 	id: string;
 	name: string;
+	flavor: string;
 	color: string;
-	taste: string;
+	sparkleLevel: number;
+	hasWings: boolean;
+	magicPower: string | null;
 };
 
 type GlobalState = {
-	lollipops: Lollipop[];
+	lollipops: FairyLollipop[];
 };
 
 const initialState: GlobalState = {
 	lollipops: [
 		{
 			id: uuid(),
-			name: "Happy Blue Burst",
-			color: "Dark blue",
-			taste: "Blueberry",
+			name: "Sparkle Dream",
+			flavor: "Cotton Candy",
+			color: "Pink",
+			sparkleLevel: 8,
+			hasWings: true,
+			magicPower: "Grants wishes",
+		},
+		{
+			id: uuid(),
+			name: "Enchanted Twilight",
+			flavor: "Blueberry",
+			color: "Purple",
+			sparkleLevel: 6,
+			hasWings: false,
+			magicPower: "Levitation",
+		},
+		{
+			id: uuid(),
+			name: "Whimsical Whirl",
+			flavor: "Strawberry",
+			color: "Red",
+			sparkleLevel: 9,
+			hasWings: true,
+			magicPower: null,
 		},
 	],
 };
 
 type Action =
-	| { type: "ADD_LOLLIPOP"; payload: Lollipop }
+	| { type: "ADD_LOLLIPOP"; payload: string }
 	| { type: "REMOVE_LOLLIPOP"; payload: string };
 
 const reducer = (state: GlobalState, action: Action): GlobalState => {
@@ -32,7 +56,18 @@ const reducer = (state: GlobalState, action: Action): GlobalState => {
 		case "ADD_LOLLIPOP":
 			return {
 				...state,
-				lollipops: [...state.lollipops, action.payload],
+				lollipops: [
+					...state.lollipops,
+					{
+						id: uuid(),
+						name: action.payload,
+						flavor: "",
+						color: "",
+						sparkleLevel: 0,
+						hasWings: false,
+						magicPower: null,
+					} as FairyLollipop,
+				],
 			};
 		case "REMOVE_LOLLIPOP":
 			return {
